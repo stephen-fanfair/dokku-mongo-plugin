@@ -118,7 +118,11 @@ case "$1" in
             
             echo
             echo "-----> $APP linked to $MONGO_IMAGE container"
+        else
+            echo "-----> $APP does not have a mongo container to link to"
         fi
+    else
+        echo "-----> $APP does not exist"
     fi
     ;;
 
