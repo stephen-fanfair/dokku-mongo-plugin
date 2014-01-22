@@ -84,7 +84,7 @@ case "$1" in
     MONGO_IMAGE=mongo/$APP
     ID=$(docker ps -a | grep "$MONGO_IMAGE":latest |  awk '{print $1}')
     IP=$(docker inspect $ID | grep IPAddress | awk '{ print $2 }' | tr -d ',"')
-    PORT=$(docker port $ID 27017)
+    PORT=$(docker port $ID 27017 | cut -d":" -f2)
     echo
     echo "       Host: $IP"
     echo "       Public port: $PORT"
@@ -100,22 +100,20 @@ case "$1" in
         fi
         MONGO_IMAGE="mongo/$3"
         ID=$(docker ps -a | grep "$MONGO_IMAGE":latest |  awk '{print $1}')
+
         if [[ ! -z "$ID" ]]; then
             IP=$(docker inspect $ID | grep IPAddress | awk '{ print $2 }' | tr -d ',"')
-            
-            if [[ ! -f "$DOKKU_ROOT/$APP/ENV" ]]; then
-                touch "$DOKKU_ROOT/$APP/ENV"
-            fi
+            PORT=$(docker port $ID 27017 | cut -d":" -f2)
             
             # Only set once! This will cause an infinite loop
             # unless you make sure it hasn't already been run!
             if [[ -z $(dokku config:get "$APP" MONGO_DATABASE) ]]; then
                 dokku config:set "$APP" MONGO_DATABASE="${APP}" \
                 MONGODB_HOST="${IP}" \
-                MONGODB_PORT="27017" \
+                MONGODB_PORT="${PORT}" \
                 MONGODB_USERNAME="$mongodb_username" \
-                MONGODB_PASSWORD="$mongodb_password"
-                #MONGO_URL="mongodb://${mongodb_username}:${mongodb_password}@${mongodb_private_ip}:${mongodb_port}/${mongodb_database}"
+                MONGODB_PASSWORD="$mongodb_password" \
+                MONGO_URL="mongodb://${mongodb_username}:${mongodb_password}@${IP}:${PORT}/${APP}"
             fi
             
             echo
