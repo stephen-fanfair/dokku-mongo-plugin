@@ -92,6 +92,7 @@ case "$1" in
     ;;
 
   mongo:link)
+    echo "-----> Attempting to link to mongo/$APP"
     if $APP_EXISTS; then
         # Check argument
         if [[ -z $3 ]]; then
