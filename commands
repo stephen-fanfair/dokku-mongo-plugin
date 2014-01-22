@@ -112,9 +112,10 @@ case "$1" in
                 dokku config:set "$APP" MONGODB_DATABASE="${APP}" \
                 MONGODB_HOST="${IP}" \
                 MONGODB_PORT="${PORT}" \
-                MONGODB_USERNAME="$mongodb_username" \
-                MONGODB_PASSWORD="$mongodb_password" \
-                MONGODB_URL="mongodb://${mongodb_username}:${mongodb_password}@${IP}:${PORT}/${APP}"
+                # MONGODB_USERNAME="$mongodb_username" \
+                # MONGODB_PASSWORD="$mongodb_password" \
+                # MONGODB_URL="mongodb://${mongodb_username}:${mongodb_password}@${IP}:${PORT}/${APP}"
+                MONGODB_URL="mongodb://${IP}:${PORT}/${APP}"
             fi
             
             echo
