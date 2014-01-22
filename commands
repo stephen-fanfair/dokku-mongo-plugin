@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e;
+set -eo pipefail;
 
 # Check if name is specified
 if [[ $1 == mongo:* ]]; then
@@ -145,4 +145,3 @@ EOF
     ;;
 
 esac
-cat
