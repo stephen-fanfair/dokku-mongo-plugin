@@ -1,5 +1,6 @@
 #!/bin/bash
 set -eo pipefail;
+set -e; 
 
 # Check if name is specified
 if [[ $1 == mongo:* ]]; then
@@ -92,7 +93,6 @@ case "$1" in
     ;;
 
   mongo:link)
-    echo "-----> Attempting to link to mongo/$APP"
     if $APP_EXISTS; then
         # Check argument
         if [[ -z $3 ]]; then
